@@ -1,24 +1,21 @@
-import express, { Application, Request, Response } from 'express'
-import morgan from 'morgan'
-import * as dotenv from 'dotenv'
+import express, { Application, Request, Response } from 'express';
+import morgan from 'morgan';
+import * as dotenv from 'dotenv';
 import routes from './routes';
 
+dotenv.config();
 
- dotenv.config()
-
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 // create an instance server
-const app: Application = express()
+const app: Application = express();
 
 // HTTP request logger middleware
-app.use(routes)
+app.use(routes);
 // add routing for / path
 
 // start express server
 app.listen(PORT, () => {
-  console.log(`Server is starting at http://localhost:${PORT}`)
-})
-export default app
-
-
+  console.log(`Server is starting at http://localhost:${PORT}`);
+});
+export default app;
