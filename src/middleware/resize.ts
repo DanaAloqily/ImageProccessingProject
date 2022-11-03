@@ -9,7 +9,7 @@ const resize = async (
   req: express.Request,
   res: express.Response,
   next: Function
-) => {
+): Promise<any> => {
   //save query params in constants to check the image's path
   const query = require('url').parse(req.url, true).query;
 
@@ -24,53 +24,38 @@ const resize = async (
       .send(
         'Welcome to the resize image api. please enter an image name, height & width. '
       );
-  }
- else if (
+  } else if (
     !imageName ||
     !width ||
     !height ||
     isNaN(Number(width)) ||
     isNaN(Number(height)) ||
     width < 0 ||
-    height < 0 
-    
+    height < 0
   ) {
-   
     return res
       .status(400)
       .send(
-        'Oops, you must enter the complete parameters. name, width & height. \n ||' + 
-        ' \n **Make sure you entered a VALID amount of height & width, greater than zero**' +
-        ' \n || **Check  the spelling of the image name**'
-       
+        'Oops, you must enter the complete parameters. name, width & height. \n ||' +
+          ' \n **Make sure you entered a VALID amount of height & width, greater than zero**' +
+          ' \n || **Check  the spelling of the image name**'
       );
   }
 
-
-
- ////////save both input & output directoreis for images 
+  ////////save both input & output directoreis for images
 
   const imgDir = path.resolve('./') + '/build/';
   const outputDir = imgDir + 'thumbnail/';
-  const imageLocation =`./src/ images/${imageName}.jpg`
+  const imageLocation = `./src/ images/${imageName}.jpg`;
   const outputImage = outputDir + `${imageName}-${width}x${height}.jpg`;
 
-   if( isExist(imageName,width,height) ){
+  if (isExist(imageName, width, height)) {
     return res.sendFile(outputImage);
   } else {
-    await resizeImage(imageLocation, imageName, height, width)
-    console.log('Image procssing done')
+    await resizeImage(imageLocation, imageName, height, width);
+    console.log('Image procssing done');
     res.sendFile(outputImage);
   }
-
-
-
-
-  
- 
-
-  
-
 };
 
 export default resize;
