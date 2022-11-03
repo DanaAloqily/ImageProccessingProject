@@ -13,10 +13,10 @@ if it exists, it's path will be sent back to the resize middleware and output th
 if not, it will go the imageResize functionality, which will resize the image through sharp and then output the image
 
 
-#Endpoint url:
+# Endpoint url:
 http://localhost:3000/resizeImage
-
-*complete example* : 
+----
+complete example : 
 http://localhost:3000/resizeImage?name=fjord&width=200&height=300
 -------
 
