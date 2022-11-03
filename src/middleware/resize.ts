@@ -2,6 +2,8 @@ import express from 'express';
 import sharp from 'sharp';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
+import resizeImage from '../utilities/resizing';
+import isExist from '../../src/utilities/isExist';
 //resize middleware that resizes the images
 const resize = async (
   req: express.Request,
@@ -15,30 +17,60 @@ const resize = async (
   const width = query.width;
   const height = query.height;
 
-  const imgDir = path.resolve('./') + '/build/';
-  const outputDir = imgDir + 'thumbnail/';
-
-  // create thumbnail folder for new images
-
-  const folderName = './build/thumbnail';
-  const fs = require('fs');
-  try {
-    if (!fs.existsSync(folderName)) {
-      fs.mkdirSync(folderName);
-    }
-  } catch (err) {
-    console.error(err);
-    console.log('could not process image')
+  ///////Check endpoint url params/////
+  if (Object.keys(req.query).length === 0) {
+    return res
+      .status(200)
+      .send(
+        'Welcome to the resize image api. please enter an image name, height & width. '
+      );
+  }
+ else if (
+    !imageName ||
+    !width ||
+    !height ||
+    isNaN(Number(width)) ||
+    isNaN(Number(height)) ||
+    width < 0 ||
+    height < 0 
+    
+  ) {
+   
+    return res
+      .status(400)
+      .send(
+        'Oops, you must enter the complete parameters. name, width & height. \n ||' + 
+        ' \n **Make sure you entered a VALID amount of height & width, greater than zero**' +
+        ' \n || **Check  the spelling of the image name**'
+       
+      );
   }
 
-  await sharp(`./src/ images/${imageName}.jpg`)
-    .resize(parseInt(height), parseInt(width))
-    .toFile(`./build/thumbnail/${imageName}-${width}x${height}.jpg`);
 
-  //saves the image with its width&height for searching it in the ifExist middleware
+
+ ////////save both input & output directoreis for images 
+
+  const imgDir = path.resolve('./') + '/build/';
+  const outputDir = imgDir + 'thumbnail/';
+  const imageLocation =`./src/ images/${imageName}.jpg`
   const outputImage = outputDir + `${imageName}-${width}x${height}.jpg`;
-console.log('image process complete')
-  return res.sendFile(outputImage);
+
+   if( isExist(imageName,width,height) ){
+    return res.sendFile(outputImage);
+  } else {
+    await resizeImage(imageLocation, imageName, height, width)
+    console.log('Image procssing done')
+    res.sendFile(outputImage);
+  }
+
+
+
+
+  
+ 
+
+  
+
 };
 
 export default resize;

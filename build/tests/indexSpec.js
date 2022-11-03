@@ -44,9 +44,16 @@ var index_1 = __importDefault(require("../index"));
 var request = (0, supertest_1.default)(index_1.default);
 describe("Testing the main endpoint's response", function () {
     it('testing the response of the root route', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
-            request.get('/resizeImage').expect(200, done);
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resizeImage')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    done();
+                    return [2 /*return*/];
+            }
         });
     }); });
 });

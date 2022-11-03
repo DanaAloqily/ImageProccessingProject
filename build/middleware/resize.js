@@ -39,11 +39,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
+var resizing_1 = __importDefault(require("../utilities/resizing"));
+var isExist_1 = __importDefault(require("../../src/utilities/isExist"));
 //resize middleware that resizes the images
 var resize = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var query, imageName, width, height, imgDir, outputDir, folderName, fs, outputImage;
+    var query, imageName, width, height, imgDir, outputDir, imageLocation, outputImage;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -51,27 +52,38 @@ var resize = function (req, res, next) { return __awaiter(void 0, void 0, void 0
                 imageName = query.name;
                 width = query.width;
                 height = query.height;
+                ///////Check endpoint url params/////
+                if (Object.keys(req.query).length === 0) {
+                    return [2 /*return*/, res
+                            .status(200)
+                            .send('Welcome to the resize image api. please enter an image name, height & width. ')];
+                }
+                else if (!imageName ||
+                    !width ||
+                    !height ||
+                    isNaN(Number(width)) ||
+                    isNaN(Number(height)) ||
+                    width < 0 ||
+                    height < 0) {
+                    return [2 /*return*/, res
+                            .status(400)
+                            .send('Oops, you must enter the complete parameters. name, width & height. \n ||' +
+                            ' \n **Make sure you entered a VALID amount of height & width, greater than zero**' +
+                            ' \n || **Check  the spelling of the image name**')];
+                }
                 imgDir = path_1.default.resolve('./') + '/build/';
                 outputDir = imgDir + 'thumbnail/';
-                folderName = './build/thumbnail';
-                fs = require('fs');
-                try {
-                    if (!fs.existsSync(folderName)) {
-                        fs.mkdirSync(folderName);
-                    }
-                }
-                catch (err) {
-                    console.error(err);
-                    console.log('could not process image');
-                }
-                return [4 /*yield*/, (0, sharp_1.default)("./src/ images/".concat(imageName, ".jpg"))
-                        .resize(parseInt(height), parseInt(width))
-                        .toFile("./build/thumbnail/".concat(imageName, "-").concat(width, "x").concat(height, ".jpg"))];
-            case 1:
-                _a.sent();
+                imageLocation = "./src/ images/".concat(imageName, ".jpg");
                 outputImage = outputDir + "".concat(imageName, "-").concat(width, "x").concat(height, ".jpg");
-                console.log('image process complete');
+                if (!(0, isExist_1.default)(imageName, width, height)) return [3 /*break*/, 1];
                 return [2 /*return*/, res.sendFile(outputImage)];
+            case 1: return [4 /*yield*/, (0, resizing_1.default)(imageLocation, imageName, height, width)];
+            case 2:
+                _a.sent();
+                console.log('Image procssing done');
+                res.sendFile(outputImage);
+                _a.label = 3;
+            case 3: return [2 /*return*/];
         }
     });
 }); };
