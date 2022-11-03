@@ -28,6 +28,7 @@ const resize = async (
     }
   } catch (err) {
     console.error(err);
+    console.log('could not process image')
   }
 
   await sharp(`./src/ images/${imageName}.jpg`)
@@ -36,7 +37,7 @@ const resize = async (
 
   //saves the image with its width&height for searching it in the ifExist middleware
   const outputImage = outputDir + `${imageName}-${width}x${height}.jpg`;
-
+console.log('image process complete')
   return res.sendFile(outputImage);
 };
 

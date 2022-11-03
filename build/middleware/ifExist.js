@@ -52,22 +52,33 @@ var ifExist = function (req, res, next) { return __awaiter(void 0, void 0, void 
         if (Object.keys(req.query).length === 0) {
             return [2 /*return*/, res
                     .status(200)
-                    .send("Welcome to the resize image api. please enter an image name, height & width. if")];
+                    .send('Welcome to the resize image api. please enter an image name, height & width. ')];
         }
         // check if query params are not missing
-        if (!imageName || !width || !height || isNaN(Number(width)) || isNaN(Number(height))) {
-            return [2 /*return*/, res.status(400).send('Oops, you must enter the complete parameters. name, width & height. if')];
+        if (!imageName ||
+            !width ||
+            !height ||
+            isNaN(Number(width)) ||
+            isNaN(Number(height)) ||
+            width < 0 ||
+            height < 0) {
+            return [2 /*return*/, res
+                    .status(400)
+                    .send('Oops, you must enter the complete parameters. name, width & height. \n ||' +
+                    ' \n **Make sure you entered a VALID amount of height & width, greater than zero**' +
+                    ' \n || **Check  the spelling of the image name**')];
         }
-        ;
-        imgDir = path_1.default.resolve("./") + "/build/";
-        outputDir = imgDir + "thumbnail/";
+        imgDir = path_1.default.resolve('./') + '/build/';
+        outputDir = imgDir + 'thumbnail/';
         outputImage = outputDir + "".concat(imageName, "-").concat(width, "x").concat(height, ".jpg");
         if ((0, fileSearch_1.default)(outputImage)) {
             // Caching system
-            res.sendFile(outputImage);
+            console.log('image found');
+            res.status(200).sendFile(outputImage);
         }
         else {
             //if image does not exist, go to the resize middleware
+            console.log('processsing image');
             return [2 /*return*/, next()];
         }
         return [2 /*return*/];

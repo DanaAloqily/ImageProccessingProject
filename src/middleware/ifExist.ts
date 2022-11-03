@@ -13,14 +13,14 @@ const ifExist = async (
   const query = require('url').parse(req.url, true).query;
 
   const imageName = query.name;
-  const width = query.width;
-  const height = query.height;
+  const width = query.width ; 
+  const height = query.height ;
 
   if (Object.keys(req.query).length === 0) {
     return res
       .status(200)
       .send(
-        'Welcome to the resize image api. please enter an image name, height & width. if'
+        'Welcome to the resize image api. please enter an image name, height & width. '
       );
   }
 
@@ -30,14 +30,24 @@ const ifExist = async (
     !width ||
     !height ||
     isNaN(Number(width)) ||
-    isNaN(Number(height))
+    isNaN(Number(height)) ||
+    width < 0 ||
+    height < 0 
+    
   ) {
+   
     return res
       .status(400)
       .send(
-        'Oops, you must enter the complete parameters. name, width & height. if'
+        'Oops, you must enter the complete parameters. name, width & height. \n ||' + 
+        ' \n **Make sure you entered a VALID amount of height & width, greater than zero**' +
+        ' \n || **Check  the spelling of the image name**'
+       
       );
   }
+ 
+
+ 
   // save the image location
   const imgDir = path.resolve('./') + '/build/'; //
   const outputDir = imgDir + 'thumbnail/'; //
@@ -46,9 +56,11 @@ const ifExist = async (
   const outputImage = outputDir + `${imageName}-${width}x${height}.jpg`; // ex: pic.jpg => pic-500x400.jpg
   if (fileExists(outputImage)) {
     // Caching system
-    res.sendFile(outputImage);
+    console.log('image found')
+    res.status(200).sendFile(outputImage);
   } else {
     //if image does not exist, go to the resize middleware
+    console.log('processsing image')
     return next();
   }
 };

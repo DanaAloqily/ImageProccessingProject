@@ -43,9 +43,9 @@ var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../index"));
 var request = (0, supertest_1.default)(index_1.default);
 describe("Testing the main endpoint's response", function () {
-    it("testing the response of the root route", function (done) { return __awaiter(void 0, void 0, void 0, function () {
+    it('testing the response of the root route', function (done) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            request.get("/resizeImage").expect(200, done);
+            request.get('/resizeImage').expect(200, done);
             return [2 /*return*/];
         });
     }); });

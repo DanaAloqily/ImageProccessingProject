@@ -51,8 +51,8 @@ var resize = function (req, res, next) { return __awaiter(void 0, void 0, void 0
                 imageName = query.name;
                 width = query.width;
                 height = query.height;
-                imgDir = path_1.default.resolve("./") + "/build/";
-                outputDir = imgDir + "thumbnail/";
+                imgDir = path_1.default.resolve('./') + '/build/';
+                outputDir = imgDir + 'thumbnail/';
                 folderName = './build/thumbnail';
                 fs = require('fs');
                 try {
@@ -62,6 +62,7 @@ var resize = function (req, res, next) { return __awaiter(void 0, void 0, void 0
                 }
                 catch (err) {
                     console.error(err);
+                    console.log('could not process image');
                 }
                 return [4 /*yield*/, (0, sharp_1.default)("./src/ images/".concat(imageName, ".jpg"))
                         .resize(parseInt(height), parseInt(width))
@@ -69,6 +70,7 @@ var resize = function (req, res, next) { return __awaiter(void 0, void 0, void 0
             case 1:
                 _a.sent();
                 outputImage = outputDir + "".concat(imageName, "-").concat(width, "x").concat(height, ".jpg");
+                console.log('image process complete');
                 return [2 /*return*/, res.sendFile(outputImage)];
         }
     });
