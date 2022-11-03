@@ -18,3 +18,4 @@ app.listen(PORT, () => {
   console.log(`Server is starting at http://localhost:${PORT}`);
 });
 export default app;
+console.log('TypeScript Eslint Prettier Starter Template!')
