@@ -44,26 +44,28 @@ var index_1 = __importDefault(require("../../index"));
 var fileSearch_1 = __importDefault(require("../../utilities/fileSearch"));
 var path_1 = __importDefault(require("path"));
 var request = (0, supertest_1.default)(index_1.default);
-var imgDir = path_1.default.resolve("./") + "/build/";
-var outputDir = imgDir + "thumbnail/";
+var imgDir = path_1.default.resolve('./') + '/build/';
+var outputDir = imgDir + 'thumbnail/';
 var outputImage = outputDir + "fjord-200x300.jpg";
-describe("testing the middleware ifExist route", function () {
-    it("test ifExist route with a missing parameter in the query", function (done) { return __awaiter(void 0, void 0, void 0, function () {
+describe('testing the middleware ifExist route', function () {
+    it('test ifExist route with a missing parameter in the query', function (done) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            request.get("/resizeImage?name=fjord").expect(400, done);
+            request.get('/resizeImage?name=fjord').expect(400, done);
             return [2 /*return*/];
         });
     }); });
-    it("test the ifExist route with complete correct parametes", function (done) { return __awaiter(void 0, void 0, void 0, function () {
+    it('test the ifExist route with complete correct parametes', function (done) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            request.get("/resizeImage?name=fjord&width=100&height=500").expect(200, done);
+            request
+                .get('/resizeImage?name=fjord&width=100&height=500')
+                .expect(200, done);
             return [2 /*return*/];
         });
     }); });
-    it("test the ifExist route with existing file", function () {
+    it('test the ifExist route with existing file', function () {
         expect((0, fileSearch_1.default)(outputImage)).toBeTruthy();
     });
-    it("test the ifExist route with existing file", function () {
-        expect((0, fileSearch_1.default)("invalid-path")).toBeFalsy();
+    it('test the ifExist route with existing file', function () {
+        expect((0, fileSearch_1.default)('invalid-path')).toBeFalsy();
     });
 });

@@ -41,19 +41,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../../index"));
-var path_1 = __importDefault(require("path"));
 var request = (0, supertest_1.default)(index_1.default);
-var file = "".concat(path_1.default.resolve("./src"), "/images/fjord.jpg");
-describe("testing the middleware resize route", function () {
-    it("test resize route with a missing parameter in the query", function (done) { return __awaiter(void 0, void 0, void 0, function () {
+describe('testing the middleware resize route', function () {
+    it('test resize route with a missing parameter in the query', function (done) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            request.get("/resizeImage?width=100&height=500").expect(400, done);
+            request.get('/resizeImage?width=100&height=500').expect(400, done);
             return [2 /*return*/];
         });
     }); });
-    it("test the resize route with complete correct parametes", function (done) { return __awaiter(void 0, void 0, void 0, function () {
+    it('test the resize route with complete correct parametes', function (done) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            request.get("/resizeImage?name=fjord&width=100&height=500").expect(200, done);
+            request
+                .get('/resizeImage?name=fjord&width=100&height=500')
+                .expect(200, done);
             return [2 /*return*/];
         });
     }); });
