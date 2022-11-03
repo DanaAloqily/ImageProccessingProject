@@ -20,7 +20,7 @@ complete example :
 http://localhost:3000/resizeImage?name=fjord&width=200&height=300
 -------
 
-# testing was done through jasmine
+** testing was done through jasmine **
 
 ------
 
