@@ -41,20 +41,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../../index"));
+var resizing_1 = __importDefault(require("../../utilities/resizing"));
 var request = (0, supertest_1.default)(index_1.default);
-describe('testing the middleware resize route', function () {
-    it('test resize route with a missing parameter in the query', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+describe('testing the middleware resize ', function () {
+    it('test resize endpoint', function (done) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            request.get('/resizeImage?width=100&height=500').expect(400, done);
+            expect(function () { return __awaiter(void 0, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, (0, resizing_1.default)('./src/ images/fjord.jpg', 'fjord', '200', '300')];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            }); }).not.toThrow();
             return [2 /*return*/];
         });
     }); });
     it('test the resize route with complete correct parametes', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
-            request
-                .get('/resizeImage?name=fjord&width=100&height=500')
-                .expect(200, done);
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resizeImage?name=fjord&width=100&height=500')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('test  route with a missing parameter in the query', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resizeImage?width=100&height=500')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('test  route with an invalid parameter in the query', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resizeImage?width=100&height=-500')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
         });
     }); });
 });
