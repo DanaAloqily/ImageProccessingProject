@@ -10,7 +10,7 @@ the resize middleware will check first if the required image is already existing
 
 if it exists, it's path will be sent back to the resize middleware and output the image
 
-if not, it will go the imageResize functionality, which will resize the image through sharp and then output the image
+if not, it will go the imageResize function, which will resize the image through sharp and then output the image
 
 
 # Endpoint url:
@@ -30,4 +30,4 @@ The youtube video walkthrough : https://www.youtube.com/watch?v=qCqAVsIavfQ
 
 The github reference for the pixely API: https://github.com/HossamAbubakr/Pixely-Image-Processing-API.git
 
-though you may find similarities in the code context but its importent to mention that the Pixelys API concept was the oppisite of our project and that is were my own work comes **
+
